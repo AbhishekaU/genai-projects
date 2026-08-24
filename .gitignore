@@ -1,0 +1,98 @@
+# ========================
+# NOT PART OF THIS REPO (permanently excluded)
+# ========================
+resume.md
+jenkins-mcp/
+Hospital-AI/
+
+# ========================
+# SECURITY - SECRETS & CREDENTIALS
+# ========================
+.env
+.env.local
+.env.*.local
+.env.*.private
+.env.prod
+.env.staging
+*.pem
+*.key
+*.pfx
+.credentials/
+secrets/
+private/
+.aws/
+.gcloud/
+.ssh/
+
+# ========================
+# PYTHON ARTIFACTS
+# ========================
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+build/
+dist/
+*.egg
+*.whl
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# ========================
+# VIRTUAL ENVIRONMENTS
+# ========================
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# ========================
+# DATABASES, VECTOR STORES & CHECKPOINTS
+# ========================
+*.db
+*.sqlite
+*.sqlite3
+database/*.db
+database/*.sqlite
+checkpoints/*.sqlite
+chroma_db/
+
+# ========================
+# LOGGING & MONITORING
+# ========================
+*.log
+*.log.*
+logs/
+.logs/
+
+# ========================
+# IDE & EDITOR
+# ========================
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ========================
+# TESTING & COVERAGE
+# ========================
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# ========================
+# API KEYS & TOKENS (any format)
+# ========================
+**/api_keys.txt
+**/tokens.json
+**/credentials.json
+**/secrets.yaml
+**/secrets.yml

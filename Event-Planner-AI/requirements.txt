@@ -1,0 +1,15 @@
+# Filled in incrementally as each file introduces a new import.
+python-dotenv>=1.1.0
+
+# tools.py
+langchain>=0.3.0
+requests>=2.31.0
+
+# agents.py
+langchain-google-genai>=2.0.0
+
+# supervisor.py
+pydantic>=2.11.0
+
+# app.py
+streamlit>=1.57.0
