@@ -13,7 +13,9 @@ viewers scroll with sound off), one sentence-sized chunk at a time, each shown
 for a share of the narration proportional to its length.
 """
 
+import math
 import re
+import struct
 import subprocess
 import sys
 import wave
@@ -82,10 +84,52 @@ def caption_frame(slide_png: Path, text: str, out: Path) -> None:
     img.save(out)
 
 
+def trim_tail_artifact(pcm: bytes, rate: int) -> bytes:
+    """Gemini TTS ends every clip with ~130ms of loud noise *after* the speech
+    has gone silent -- audible as a scratch at the end of each slide. Find the
+    last silent gap (>= 80ms) in the final half second and cut just after it
+    starts, with a 20ms fade so the cut can't click. A clip that doesn't end
+    that way is returned unchanged."""
+    samples = list(struct.unpack(f"<{len(pcm) // 2}h", pcm))
+    win = rate // 100  # 10ms windows
+
+    def quiet(i: int) -> bool:
+        chunk = samples[i:i + win]
+        rms = math.sqrt(sum(x * x for x in chunk) / len(chunk)) / 32768
+        return rms < 10 ** (-45 / 20)  # below -45 dBFS
+
+    start = max(0, len(samples) - rate // 2)
+    windows = list(range(start, len(samples) - win, win))
+    gap_start, tail_start, run = None, None, 0
+    for i in windows:
+        if quiet(i):
+            run += 1
+            if run == 8 and gap_start is None:      # 80ms of silence
+                gap_start = i - 7 * win
+        elif gap_start is not None:
+            tail_start = i                          # the loud tail after the gap
+            break
+        else:
+            run = 0
+    # Only a short burst running to the very end is the artifact. Anything
+    # longer could be a last word after a pause -- leave that alone.
+    if gap_start is None or tail_start is None or len(samples) - tail_start > rate // 5:
+        return pcm
+
+    cut = gap_start + 6 * win  # keep 60ms of the silence
+    fade = rate // 50          # 20ms
+    out = samples[:cut]
+    for k in range(fade):
+        out[-fade + k] = int(out[-fade + k] * (1 - k / fade))
+    return struct.pack(f"<{len(out)}h", *out)
+
+
 def padded_audio(src: Path, out: Path) -> float:
-    """Adds the lead-in and tail silence; returns the narration's own length."""
+    """Trims the TTS tail artifact, adds the lead-in and tail silence; returns
+    the narration's own length."""
     with wave.open(str(src)) as f:
         pcm, rate = f.readframes(f.getnframes()), f.getframerate()
+    pcm = trim_tail_artifact(pcm, rate)
     silence = lambda s: b"\x00\x00" * int(rate * s)  # noqa: E731 -- 16-bit mono
     with wave.open(str(out), "wb") as f:
         f.setnchannels(1)
