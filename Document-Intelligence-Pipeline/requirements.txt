@@ -17,3 +17,7 @@ rapidfuzz>=3.9.0
 
 # app.py
 streamlit>=1.57.0
+
+# video/ (LinkedIn walkthrough video)
+playwright>=1.40.0
+pillow>=10.0.0

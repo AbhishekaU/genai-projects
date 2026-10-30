@@ -90,7 +90,8 @@ if issues:
 
 
 def status(name: str) -> str:
-    return ":material/warning: check" if name in issues_by_field else ":material/check: grounded"
+    # Plain characters: dataframe cells don't render :material/...: icon shortcodes.
+    return "⚠ check" if name in issues_by_field else "✓ grounded"
 
 
 values_tab, clauses_tab, json_tab = st.tabs(["Key terms", "Clauses", "JSON"])

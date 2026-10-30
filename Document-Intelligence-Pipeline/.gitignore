@@ -26,3 +26,6 @@ env/
 # Dataset (re-create with download_data.py) and eval outputs
 data/
 results/
+
+# Video build output (frames, audio, mp4) -- re-create with video/make_video.py
+video/build/

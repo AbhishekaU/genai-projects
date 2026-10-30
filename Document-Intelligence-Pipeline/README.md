@@ -201,3 +201,18 @@ Fill these in from your eval numbers:
 - Try a second model (set `GEMINI_MODEL`) and plot F1 vs cost per contract.
 - Retry-on-validation-failure: re-ask the model only for fields that failed grounding.
 - Break results down by `contract_type` (in `data/manifest.csv`).
+
+## Walkthrough video
+
+`video/` builds a ~2-minute narrated slide video of this project (1920x1080,
+burned-in subtitles) -- every number on the slides is read from `results/`.
+
+```bash
+python video/capture_demo.py     # screenshot of the app for the demo slide (1 model call)
+python video/make_video.py       # voice (Gemini TTS) + render slides + assemble with ffmpeg
+python video/voice.py --check    # transcribe each clip back and compare with the script
+```
+
+Needs ffmpeg on PATH and Google Chrome installed (Playwright drives the system
+Chrome, so no browser download). Edit the script in `video/narration.py`; only
+changed slides are re-voiced. Output: `video/build/document-intelligence-pipeline.mp4`.
