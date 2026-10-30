@@ -1,0 +1,19 @@
+# download_data.py
+requests>=2.31.0
+
+# extractor.py
+python-dotenv>=1.1.0
+langchain>=1.0.0
+langchain-google-genai>=4.0.0
+
+# schema.py
+pydantic>=2.11.0
+
+# parsers.py
+pypdf>=6.0.0
+
+# matching.py / validate.py
+rapidfuzz>=3.9.0
+
+# app.py
+streamlit>=1.57.0

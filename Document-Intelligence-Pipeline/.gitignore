@@ -1,0 +1,28 @@
+# Secrets
+.env
+.env.local
+.env.*.local
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.mypy_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Databases / checkpoints
+*.db
+*.sqlite
+*.sqlite3
+
+# IDE
+.vscode/
+.idea/
+
+# Dataset (re-create with download_data.py) and eval outputs
+data/
+results/
